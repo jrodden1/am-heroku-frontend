@@ -54,7 +54,7 @@ class MaintEvent {
       }
       
       //AJAX call to backend to create new MaintEvent object
-      fetch(baseURL + "maint_events", postOptionsObj)
+      fetch(baseURL + "/maint_events", postOptionsObj)
          .then(resp => resp.json())
          .then(newMaintEventData => {
             //Process my new maintEventData & clear my new Maint Event form

@@ -49,7 +49,7 @@ class Vehicle {
       }
 
       //perform AJAX POST fetch for a new vehicle, create a new instance of the vehicle, render it, then close the new form modal and clear the form
-      fetch(baseURL + "vehicles", postOptionsObj)
+      fetch(baseURL + "/vehicles", postOptionsObj)
          .then(resp => resp.json())
          .then(newVehicleData => {
             let newVehicleInst = new Vehicle(newVehicleData)
