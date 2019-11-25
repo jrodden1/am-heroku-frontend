@@ -19,3 +19,5 @@ function removeError(event) {
    errorDisplayDiv.setAttribute("style", "display: none;")
    errorDetailsP.textContent = ``
 }
+
+const baseURL = "https://automaintainer-backend.herokuapp.com"
