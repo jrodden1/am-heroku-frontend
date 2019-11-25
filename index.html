@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Auto Maintainer</title>
+   <!-- Favicon -->
+   <link rel="icon" href="./favicon.ico" type="image/x-icon">
+   <!--Import Google Icon Font-->
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+   <!-- Compiled and minified MaterializeCSS -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+   <!-- Custom CSS Styles -->
+   <style>
+      #error-details {
+         display: inline;
+         border-radius: 15px;
+         padding: 10px; 
+       }
+
+       #toast-container {
+         top: 12% !important;
+         right: 30% !important;
+         bottom: 10%;
+         left: 30%;  
+       }
+   </style>
+   <!--Let browser know website is optimized for mobile-->
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+</head>
+<body>
+   <!-- want to put in the title bar with wrench icon  -->
+   <nav class="red darken-2">
+      <div class="nav-wrapper">
+         <a class="brand-logo center"><i class="material-icons">build</i>Auto Maintainer</a>
+      </div>
+   </nav>
+   <!-- This #error-notice div is only used if the Alternate Method from displaying errors (from globals.js -> renderErrors()) is used-->
+   <div id="error-notice" class="center" style="display: none;">  
+      <br>
+      <p class="red white-text" id="error-details"></p>
+   </div>
+
+   <div class="container"><br>
+      <div>
+         <ul id="vehicle-list" class="collapsible" style="display: none;">
+         
+         </ul>
+      </div>
+   </div>
+
+   <div class="fixed-action-btn">
+      <a id="new-vehicle-btn" class="btn-floating btn-large red darken-2 modal-trigger" href="#modal1"">
+         <i class="large material-icons">add</i>
+      </a>
+   </div>
+   <div class="tap-target red darken-2" data-target="new-vehicle-btn">
+      <div class="tap-target-content white-text">
+         <h5 class="center">Welcome to <br> Auto Maintainer</h5><br>
+         <p>With Auto Maintainer, you can track your vehicles and what maintenance has been peformed on them!</p>
+         <p>To get started, Click here to create a new vehicle!</p>
+      </div>
+   </div>
+   
+   <div id="modal1" class="modal bottom-sheet">
+      <div class="modal-content">
+         <h4 class="center">Create New Vehicle</h4>
+         <form id="new-vehicle-form" method="post">
+            <div class="row">
+               <div class="col s4">
+                  <div class="input-field">
+                     <label for="number">Year:</label>
+                     <input class="validate" type="number" name="year" id="year" min="1875" step="1" placeholder="" required autofocus>
+                  </div>
+               </div>
+               <div class="col s4">
+                  <div class="input-field">
+                     <label for="make">Make:</label>
+                     <input class="validate" type="text" name="make" id="make" placeholder="Ford" required>
+                  </div>
+               </div>
+               <div class="col s4">
+                  <div class="input-field">
+                     <label for="model">Model:</label>
+                     <input class="validate" type="text" name="model" id="model" placeholder="Model T" required>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col s3">
+                  <div class="input-field">
+                     <label for="color">Color:</label>
+                     <input class="validate" type="text" name="color" id="color" placeholder="Black" required>
+                  </div>
+               </div>
+               <div class="col s4">
+                  <div class="input-field">
+                     <label for="owner">Owner:</label>
+                     <input type="text" name="owner" id="owner" placeholder="Henry Ford">
+                     <span class="helper-text" data-error="wrong" data-success="right">*Optional</span>
+                  </div>
+               </div>
+               <div class="col s5">
+                  <div class="input-field">
+                     <label for="vin">VIN:</label>
+                     <input class="validate" oninput="(function(elem){elem.value = elem.value.toUpperCase()})(this)" type="text" name="vin" id="vin" placeholder="1F4PE18F227292225" maxlength=17 pattern="[\d\w]+">
+                     <span class="helper-text" data-error="Must only contain numbers and letters" data-success="">*Optional</span>
+                  </div>
+               </div>
+            </div>
+               <div class="center">
+                  <a id="cancel-new-vehicle" href="#!" class="modal-close waves-effect waves-grey grey btn">Cancel</a>
+                  <button type="submit" class="btn waves-effect red darken-2">Create New Vehicle</button>
+               </div>
+         </form>
+      </div>  
+   </div>
+
+   <div id="modal2" class="modal">
+      <div class="modal-content">
+         <h4 class="center">Create New Maintenance Event</h4>
+         <form id="new-maintevent-form" method="post">
+            <input id="for-vehicle" type="hidden" name="vehicle-id" value="">
+            <div class="row">
+               <div class="col s6">
+                  <div class="input-field">
+                     <label for="number">Mileage at Event: </label>
+                     <input class="validate" type="number" name="mileage" id="mileage" min="1" max="5000000" step="1" placeholder="100000" maxlength=7 required autofocus>
+                  </div>
+               </div>
+               <div class="col s6">
+                  <div class="input-field">
+                     <label for="completed">Completed Date:</label>
+                     <input class="validate" type="date" name="completed" id="completed" min="1875-01-01"  placeholder="2019-05-09" required>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col s6">
+                  <div class="input-field">
+                     <label for="event-type">Event Type:</label>
+                     <input class="validate" type="text" name="event_type" id="event-type" placeholder="Transmission Rebuild" minlength=3 required>
+                  </div>
+               </div>
+               <div class="col s6">
+                  <div class="input-field">
+                     <label for="cost">Cost:</label>
+                     <input class="validate" onchange="(function limitDecimalsTwo(elem) {elem.value = parseFloat(elem.value).toFixed(2)})(this)" type="number" name="cost" id="cost" placeholder="1154.87" min="0.00" step=".01" pattern="\d+(\.\d{2})?" required>
+                  </div>
+               </div>
+            </div>
+               <div class="row">
+                  <div class="input-field col s12">
+                     <label for="textarea1">Comment</label>
+                    <textarea id="comment" name="comment" placeholder="Henry Ford digs my ride, though my transmission blew up" class="materialize-textarea"></textarea>
+                  </div>
+               </div>   
+               <div class="center">
+                  <a id="cancel-new-maint-event" href="#!" class="modal-close waves-effect waves-grey grey btn">Cancel</a>
+                  <button type="submit" class="btn waves-effect red darken-2">Create New Maintenance Event</button>
+               </div>
+         </form>
+      </div>
+   </div>
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+   <!-- Compiled and minified JavaScript for MaterializeCSS -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+   <!-- Load in globals -->
+   <script src="javascripts/globals.js"></script>
+   <!-- Load in api service -->
+   <!-- <script src="services/api.js"></script> --> 
+   <!-- If I decide to use the api service in later iterations, this script file above will need to be uncommented -->
+   <!-- Load in models -->
+   <script src="models/vehicle.js"></script>
+   <script src="models/maintenance-event.js"></script>
+   <!-- Load in index.js -->
+   <script src="javascripts/index.js"></script>
+   
+   
+   </body>
+</html>
